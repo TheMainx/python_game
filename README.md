@@ -1,1 +1,1 @@
-# python_game
+python terminal game
