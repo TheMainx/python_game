@@ -1,4 +1,4 @@
-level = 2
+level = 0
 height = 12
 posy = 2
 posx = 2
@@ -22,11 +22,10 @@ def room_generation(height, posy_player, posx_player):
         for i in range(height):
             if i == 0 or i == height - 1:
                 print('*', (height - 2) * ' * ', '*')
+            elif posy_player == 9 and i == 8:
+                print('*', ' *', ' . ' * (posx_player - 3), 'x', ' . '*(height - posx_player - 1), '*')
             elif i == 8:
-                if posx_player != 8:
-                    print('*', ' *',' . ' * (height - 3), '*')
-                else:
-                    print('*', ' *',' . ' * (posx_player - 3),'x',' . '*(height - posx_player), '*') #błąd w linii od 25 do 29 po wejściu na i = 8 x znika do naprawy!!!
+                print('*', ' *', ' . ' * (height - 3), '*')
             elif i == 1:
                 if posy == 2:
                     if posx_player < 9:
@@ -99,7 +98,7 @@ def move(height):
         elif posy == height - 1:
             print("zły ruch")
 for game in range(3):
-    #level = game + 1
+    level = game + 1
     posy = 2
     posx = 2
     wyg = True
