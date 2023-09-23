@@ -1,109 +1,155 @@
-level = 0
+level = 1
 height = 12
 posy = 2
 posx = 2
 wyg = True
-
+plansza = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],[".", ".", ".", ".", ".", ".", ".", ".", ".", "E"]]
 def room_generation(height, posy_player, posx_player):
-    if level == 1:
-        for i in range(height):
-            if i == 0 or i == height - 1:
-                print('*', (height - 2) * ' * ', '*')
-            elif i + 1 == posy_player:
-                if i == (height - 2):
-                    print('*', ' . ' * (posx_player - 2), 'x', ' . ' * (height - posx_player - 2), 'E ', '*')
-                else:
-                    print('*', ' . ' * (posx_player - 2), 'x', ' . ' * (height - posx_player - 1), '*')
-            elif i == (height - 2):
-                print('*', (height - 3) * ' . ', 'E ', '*')
-            else:
-                print('*', ' . ' * (height - 2), '*')
-    if level == 2:
-        for i in range(height):
-            if i == 0 or i == height - 1:
-                print('*', (height - 2) * ' * ', '*')
-            elif posy_player == 9 and i == 8:
-                print('*', ' *', ' . ' * (posx_player - 3), 'x', ' . '*(height - posx_player - 1), '*')
-            elif i == 8:
-                print('*', ' *', ' . ' * (height - 3), '*')
-            elif i == 1:
-                if posy == 2:
-                    if posx_player < 9:
-                        print('*', ' . ' * (posx_player - 2), 'x', ' . ' * (8 - posx_player), '*', ' . '*2,'*')
-                    else:
-                        print('*', ' . ' * 7, '*', ' . ' * (posx_player - 10), 'x', ' . '*(height - posx_player - 1),'*')
-                else:
-                    print('*', ' . ' * 7, '*', ' . '*2, '*')
-            elif i + 1 == posy_player:
-                if i == (height - 2):
-                    print('*', ' . ' * (posx_player - 2), 'x', ' . ' * (height - posx_player - 2), 'E ', '*')
-                else:
-                    print('*', ' . ' * (posx_player - 2), 'x', ' . ' * (height - posx_player - 1), '*')
-            elif i == (height - 2):
-                print('*', (height - 3) * ' . ', 'E ', '*')
-            else:
-                print('*', ' . ' * (height - 2), '*')
+    plansza[posy_player-2][posx_player - 2] = "x"
+    print(height * " *")
+    for i in range(height - 2):
+        print(" * ", end="")
+        for z in range(height - 2):
+            print(plansza[i][z], end=" ")
+        print("* ")    
+    print(height * " *")
+zycie = True
+level2 =[2, 9]
+level3 =[4, 7]
+rewards = 0
 
 def move(height):
     x = input()
     global posy
     global posx
     global wyg
+    global plansza
+    global zycie
+    global level
+    global rewards
+    if (posy) != 11 or posx != 11: 
+        plansza[posy -2][posx - 2] = "."
+    elif level != rewards and ((posx) == 11 and (posy == 11)):
+        plansza[9][9] = "E"
     if x == "p":
         if posx != height - 1:
             posx += 1
-            if (posx == height - 1) and (posy == height - 1):
-                print("WYGRAŁEŚ")
-                wyg = False
             if level >= 2:
-                if posx == height - 3 and posy == 2:
-                    print("zły ruch")
+                if posy == 8 and posx == 10:
+                    rewards += 1
+                if posx == level2[1] and posy == level2[0]:
+                    print("GAME OVER")
                     posx -= 1
+                    zycie = False
+            if level >= 3:
+                if (posy == 4 and posx == 7) or (posx == 4 and posy == 7):
+                    print("GAME OVER")
+                    zycie = False
+                if posy == 6 and posx == 7:
+                        rewards += 1
+            if posy == 5 and posx == 9:
+                rewards += 1
+            if (posx == height - 1) and (posy == height - 1) and rewards == level:
+                print("PRZESZEDŁEŚ LEVEL ", level)
+                wyg = False
         elif posx == height - 1:
-            print("zły ruch")
+            print("GAME OVER")
+            zycie = False
     elif x == "l":
         if posx != 2:
             posx -= 1
             if level >= 2:
-                if posx == height - 3 and posy == 2:
-                    print("zły ruch")
+                if posy == 8 and posx == 10:
+                    rewards += 1
+                if posx == level2[1] and posy == level2[1]:
+                    print("GAME OVER")
                     posx += 1
-                elif posy == height - 3 and posx == 2:
-                    print("zły ruch")
+                    zycie = False
+                elif posy == level2[1] and posx == level2[0]:
+                    print("GAME OVER")
                     posx += 1
+                    zycie = False
+                if level >= 3:
+                    if (posy == 4 and posx == 7) or (posx == 4 and posy == 7):
+                        print("GAME OVER")
+                        zycie = False
+                    if posy == 6 and posx == 7:
+                        rewards += 1
+
+            if posy == 5 and posx == 9:
+                rewards += 1
         elif posx == 2:
-            print("zły ruch")
+            print("GAME OVER")
+            zycie = False
     elif x == "g":
         if posy != 2:
             posy -= 1
             if level >= 2:
-                if posx == height - 3 and posy == 2:
-                    print("zły ruch")
+                if posy == 8 and posx == 10:
+                    rewards += 1
+                if posx == level2[1] and posy == level2[0]:
+                    print("GAME OVER")
                     posy += 1
-                elif posy == height - 3 and posx == 2:
-                    print("zły ruch")
+                    zycie = False
+                elif posy == level2[1] and posx == level2[0]:
+                    print("GAME OVER")
                     posy += 1
+                    zycie = False
+                if level >= 3:
+                    if (posy == 4 and posx == 7) or (posx == 4 and posy == 7):
+                        print("GAME OVER")
+                        zycie = False
+                    if posy == 6 and posx == 7:
+                        rewards += 1
+            if posy == 5 and posx == 9:
+                rewards += 1
         elif posy == 2:
-            print("zły ruch")
+            print("GAME OVER")
+            zycie = False
     elif x == "d":
         if posy < height - 1:
             posy += 1
-            if (posx == height - 1) and (posy == height - 1):
-                print("WYGRAŁEŚ")
-                wyg = False
             if level >= 2:
-                if posy == height - 3 and posx == 2:
-                    print("zły ruch")
+                if posy == 8 and posx == 10:
+                    rewards += 1
+                if posy == level2[1] and posx == level2[0]:
+                    print("GAME OVER")
+                    zycie = False
                     posy -= 1
+                if level >= 3:
+                    if (posy == 4 and posx == 7) or (posx == 4 and posy == 7):
+                        print("GAME OVER")
+                        zycie = False
+                    if posy == 6 and posx == 7:
+                        rewards += 1
+            if posy == 5 and posx == 9:
+                rewards += 1
+            if (posx == height - 1) and (posy == height - 1) and level == rewards:
+                print("PRZESZEDŁEŚ LEVEL ", level)
+                wyg = False
         elif posy == height - 1:
-            print("zły ruch")
+            print("GAME OVER")
+            zycie = False
 for game in range(3):
-    level = game + 1
+    rewards = 0
+    if level >= 2:
+        plansza[6][8] = "R"
+    plansza[3][7] = "R"
+    if level >= 3:
+        plansza[4][5] = "R"
     posy = 2
     posx = 2
     wyg = True
-    print('level: ', level)
-    while wyg:
+    if zycie:
+        print('level: ', level)
+    while wyg and zycie:
         room_generation(height, posy, posx)
         if wyg == True:
             move(height)
+    level += 1
+    if level == 2:
+        plansza[7][0] = "*"
+        plansza[0][7] = "*"
+    elif level == 3:
+        plansza[2][5] = "*"
+        plansza[5][2] = "*"
